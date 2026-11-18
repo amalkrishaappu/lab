@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Validation</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        .container {
+            width: 350px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .form {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Registration Form</h2>
+
+        <form id="registerForm" class="form">
+
+            <input type="text" id="name" placeholder="Enter Name">
+            <div id="nameError" class="error"></div>
+
+            <input type="email" id="regEmail" placeholder="Enter Email">
+            <div id="regEmailError" class="error"></div>
+
+            <input type="password" id="regPassword" placeholder="Enter Password">
+            <div id="regPasswordError" class="error"></div>
+
+            <input type="password" id="confirmPassword" placeholder="Confirm Password">
+            <div id="confirmError" class="error"></div>
+
+            <button type="submit">Register</button>
+
+            <p id="regMessage"></p>
+
+        </form>
+
+        <hr>
+
+        <h2>Login Form</h2>
+
+        <form id="loginForm">
+
+            <input type="email" id="loginEmail" placeholder="Enter Email">
+            <div id="loginEmailError" class="error"></div>
+
+            <input type="password" id="loginPassword" placeholder="Enter Password">
+            <div id="loginPasswordError" class="error"></div>
+
+            <button type="submit">Login</button>
+
+            <p id="loginMessage"></p>
+
+        </form>
+
+    </div>
+
+    <script>
+
+        // Email validation
+        function validEmail(email) {
+            let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return pattern.test(email);
+        }
+
+        // Password validation
+        function validPassword(password) {
+            let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            return pattern.test(password);
+        }
+
+        // Registration validation
+        document.getElementById("registerForm").onsubmit = function(event) {
+
+            event.preventDefault();
+
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("regEmail").value.trim();
+            let password = document.getElementById("regPassword").value;
+            let confirm = document.getElementById("confirmPassword").value;
+
+            let valid = true;
+
+            document.querySelectorAll(".error").forEach(function(e) {
+                e.innerText = "";
+            });
+
+            document.getElementById("regMessage").innerText = "";
+
+            if (name === "") {
+                document.getElementById("nameError").innerText = "Name is required";
+                valid = false;
+            }
+
+            if (email === "") {
+                document.getElementById("regEmailError").innerText = "Email is required";
+                valid = false;
+            }
+            else if (!validEmail(email)) {
+                document.getElementById("regEmailError").innerText = "Enter valid email";
+                valid = false;
+            }
+
+            if (password === "") {
+                document.getElementById("regPasswordError").innerText = "Password is required";
+                valid = false;
+            }
+            else if (!validPassword(password)) {
+                document.getElementById("regPasswordError").innerText =
+                    "Password must have 8 characters, uppercase, lowercase and number";
+                valid = false;
+            }
+
+            if (confirm === "") {
+                document.getElementById("confirmError").innerText = "Confirm password is required";
+                valid = false;
+            }
+            else if (password !== confirm) {
+                document.getElementById("confirmError").innerText = "Passwords do not match";
+                valid = false;
+            }
+
+            if (valid) {
+                document.getElementById("regMessage").innerText =
+                    "Registration Successful!";
+                document.getElementById("regMessage").className = "success";
+            }
+
+        };
+
+
+        // Login validation
+        document.getElementById("loginForm").onsubmit = function(event) {
+
+            event.preventDefault();
+
+            let email = document.getElementById("loginEmail").value.trim();
+            let password = document.getElementById("loginPassword").value;
+
+            document.getElementById("loginEmailError").innerText = "";
+            document.getElementById("loginPasswordError").innerText = "";
+            document.getElementById("loginMessage").innerText = "";
+
+            let valid = true;
+
+            if (email === "") {
+                document.getElementById("loginEmailError").innerText = "Email is required";
+                valid = false;
+            }
+            else if (!validEmail(email)) {
+                document.getElementById("loginEmailError").innerText = "Invalid email format";
+                valid = false;
+            }
+
+            if (password === "") {
+                document.getElementById("loginPasswordError").innerText = "Password is required";
+                valid = false;
+            }
+            else if (!validPassword(password)) {
+                document.getElementById("loginPasswordError").innerText =
+                    "Enter a valid password (8 characters, uppercase, lowercase and number)";
+                valid = false;
+            }
+
+            if (valid) {
+                document.getElementById("loginMessage").innerText =
+                    "Login validation successful!";
+                document.getElementById("loginMessage").className = "success";
+            }
+
+        };
+
+    </script>
+
+</body>
+</html>

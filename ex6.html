@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Product Catalogue</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .filters {
+            text-align: center;
+            margin: 20px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .product {
+            background: white;
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px #ccc;
+        }
+
+        .product h3 {
+            color: #007bff;
+        }
+
+        .price {
+            color: green;
+            font-weight: bold;
+        }
+
+        #message {
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Product Catalogue</h1>
+
+    <div class="filters">
+        <input
+            type="text"
+            id="search"
+            placeholder="Search products..."
+        >
+
+        <select id="category">
+            <option value="all">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Books">Books</option>
+        </select>
+    </div>
+
+    <div id="products"></div>
+    <p id="message"></p>
+
+    <script>
+
+        // Product array
+        const products = [
+            {
+                name: "Laptop",
+                price: 50000,
+                category: "Electronics"
+            },
+            {
+                name: "Mobile Phone",
+                price: 20000,
+                category: "Electronics"
+            },
+            {
+                name: "T-Shirt",
+                price: 500,
+                category: "Clothing"
+            },
+            {
+                name: "Jeans",
+                price: 1200,
+                category: "Clothing"
+            },
+            {
+                name: "JavaScript Book",
+                price: 600,
+                category: "Books"
+            },
+            {
+                name: "Python Book",
+                price: 450,
+                category: "Books"
+            }
+        ];
+
+        const search = document.getElementById("search");
+        const category = document.getElementById("category");
+        const productContainer = document.getElementById("products");
+        const message = document.getElementById("message");
+
+        // Display products
+        function displayProducts(items) {
+
+            productContainer.innerHTML = "";
+
+            if (items.length === 0) {
+                message.innerHTML = "No products found!";
+                return;
+            }
+
+            message.innerHTML = "";
+
+            items.forEach(product => {
+
+                productContainer.innerHTML += `
+                    <div class="product">
+                        <h3>${product.name}</h3>
+                        <p class="price">₹${product.price}</p>
+                        <p>Category: ${product.category}</p>
+                    </div>
+                `;
+
+            });
+        }
+
+        // Search and filter products
+        function filterProducts() {
+
+            const searchValue = search.value.toLowerCase();
+            const categoryValue = category.value;
+
+            const filteredProducts = products.filter(product => {
+
+                const matchesSearch =
+                    product.name.toLowerCase().includes(searchValue);
+
+                const matchesCategory =
+                    categoryValue === "all" ||
+                    product.category === categoryValue;
+
+                return matchesSearch && matchesCategory;
+
+            });
+
+            displayProducts(filteredProducts);
+        }
+
+        // Event listeners
+        search.addEventListener("input", filterProducts);
+
+        category.addEventListener("change", filterProducts);
+
+        // Display all products initially
+        displayProducts(products);
+
+    </script>
+
+</body>
+</html>
